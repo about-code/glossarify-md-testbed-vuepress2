@@ -1,5 +1,7 @@
 *gitignore.*
 .vscode
+.cache
+.temp
 node_modules
 **/dist
 output-actual
