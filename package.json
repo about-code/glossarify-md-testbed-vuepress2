@@ -1,0 +1,26 @@
+{
+  "typ": "module",
+  "scripts": {
+    "start": "npm-run-all -p  glossarified vuepress",
+    "build": "npm run glossarify && vuepress build output-actual --clean-cache",
+    "glossarified": "glossarify-md --config ./glossarify-md.conf.json --watch",
+    "glossarify": "glossarify-md --config ./glossarify-md.conf.json",
+    "vuepress": "vuepress dev output-actual --clean-cache",
+    "input": "vuepress dev input",
+    "debug": "node --inspect-brk ../glossarify-md/bin/index.js --config ./glossarify-md.conf.json",
+    "pretest": "rm -rf ./output-actual",
+    "test": "glossarify-md --config ./glossarify-md.conf.json",
+    "posttest": "git diff --minimal --color --no-index --ignore-cr-at-eol ./output-expected ./output-actual | node difftest.js",
+    "new-baseline": "rm -r ./output-expected && cp -r ./output-actual ./output-expected",
+    "commit-baseline": "npm test && git reset && git add './package.json' './input' './output-expected' && git commit -m 'test: New baseline.'"
+  },
+  "dependencies": {
+    "vuepress": "^2.0.0-beta.67",
+    "vuepress-bar": "^0.4.4",
+    "vuepress-plugin-jsonld-playground": "file:vuepress-plugin-jsonld-playground.tgz"
+  },
+  "devDependencies": {
+    "glossarify-md": "^6.0.1",
+    "npm-run-all": "^4.1.5"
+  }
+}

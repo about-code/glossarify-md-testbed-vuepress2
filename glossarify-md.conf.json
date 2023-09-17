@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/glossarify-md/conf/v5/schema.json",
+  "baseDir": "./input",
+  "outDir": "../output-actual",
+  "keepRawFiles": [
+    "01-vuepress-plugins/**"
+  ],
+  "generateFiles": {
+    "indexFile": {
+      "file": "./03-index/output-actual.md",
+      "title": "Index"
+    }
+  },
+  "glossaries": [
+    { "file": "./02-glossarify-md/**/*.md" }
+  ],
+  "linking": {
+    "mentions": "all",
+    "headingAsLink": true
+  }
+}
