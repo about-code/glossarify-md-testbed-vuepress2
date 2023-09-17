@@ -1,8 +1,9 @@
 /**
  * Inspired by https://npmjs.com/package/vuepress-bar
  * but usable with vuepress2 config. Not yet supporting
- * all options of original vuepress-bar. Currently,
- * supporting 'sidebar' only.
+ * all options of original vuepress-bar.
+ *
+ * Currently returning a vuepress 'sidebar' only.
  */
 
 import { SidebarConfigArray, SidebarGroup } from "@vuepress/theme-default";
