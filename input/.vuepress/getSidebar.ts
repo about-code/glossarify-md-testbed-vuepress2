@@ -1,12 +1,26 @@
-// Inspired by https://npmjs.com/package/vuepress-bar
+/**
+ * Inspired by https://npmjs.com/package/vuepress-bar
+ * but usable with vuepress2 config. Not yet supporting
+ * all options of original vuepress-bar. Currently,
+ * supporting 'sidebar' only.
+ */
 
 import { SidebarConfigArray, SidebarGroup } from "@vuepress/theme-default";
 import fs from "fs";
 
 type Options = {
+
+  /** See https://npmjs.com/package/vuepress-bar */
   stripNumbers?: boolean,
+
+  /** See https://npmjs.com/package/vuepress-bar */
+  maxLevel?: number,
+
+  /** Try capitalize words in all-lowercase directory and filenames. */
   capitalizeWords?: boolean,
-  maxLevel?: number
+
+  /** See https://npmjs.com/package/vuepress-bar */
+  filter?: (item) => boolean
 }
 
 const isMarkdownFileOrUnknown = /^\.?[a-zA-Z0-9-+_]+(\.md)?$/;
@@ -36,7 +50,6 @@ function sortByFileName(fileA, fileB) {
 }
 
 let recursion = 0;
-
 function mapToSidebarItem(file: string, path: string, _basePath: string, opts: Options): SidebarGroup | string {
   // Path normalization: replace duplicate and OS-dependent path separators
   const _path = toForwardSlash(`${path}/${file}`);
@@ -92,13 +105,17 @@ function getSidebar(path, _basePath = "", opts: Options = {}): SidebarConfigArra
   }
 
   const files = fs.readdirSync(path);
+  const filter = opts.filter || function (item) {
+
+    // filter `null` or `undefined` items that may be created
+    // when attempting to map directories without .md content
+    return !!item
+  };
   const sidebar = files
     .filter(file => isMarkdownFileOrUnknown.test(file))
     .sort(sortByFileName)
     .map(file => mapToSidebarItem(file, path, _basePath, opts))
-    .filter(item => !!item);
-    // filter `null` or `undefined` items that may be created
-    // when attempting to map directories without .md content
+    .filter(filter);
 
     return sidebar;
 }
@@ -107,10 +124,9 @@ function getSidebar(path, _basePath = "", opts: Options = {}): SidebarConfigArra
  * Drop-in replacement for npmjs.com/package/vuepress-bar.
  * Not yet supporting all options.
  */
-export function getConfig(path: string, options: Options) {
+export default function (path: string, options: Options) {
   recursion = 0;
   return {
     sidebar: getSidebar(path, "", options)
-    ,navbar: getSidebar(path, "", options)
   }
 }
