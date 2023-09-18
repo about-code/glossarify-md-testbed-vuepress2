@@ -2,7 +2,8 @@ import { getSlugger } from "glossarify-md";
 import { defaultTheme } from "@vuepress/theme-default";
 import footnotes from "markdown-it-footnote";
 import tableOfContents from "markdown-it-toc-done-right";
-import getConfig from "./getSidebar";
+import getConfig from "vuepress-barista";
+// import getConfig from "./getSidebar";
 
 const slugify = getSlugger();
 const { sidebar } = getConfig("./input", {
